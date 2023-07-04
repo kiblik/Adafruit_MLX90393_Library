@@ -18,10 +18,16 @@
 #ifndef ADAFRUIT_MLX90393_H
 #define ADAFRUIT_MLX90393_H
 
+#ifdef ARDUINO  // We keep this include because it was in original version of library but it is not necessary
 #include "Arduino.h"
 #include <Adafruit_I2CDevice.h>
 #include <Adafruit_SPIDevice.h>
 #include <Adafruit_Sensor.h>
+#else
+#include "Adafruit_BusIO/Adafruit_I2CDevice.h"
+#include "Adafruit_BusIO/Adafruit_SPIDevice.h"
+#include "Adafruit_Unified_Sensor/Adafruit_Sensor.h"
+#endif
 
 #define MLX90393_DEFAULT_ADDR (0x0C) /* Can also be 0x18, depending on IC */
 
@@ -173,7 +179,7 @@ public:
   Adafruit_MLX90393();
   bool begin_I2C(uint8_t i2c_addr = MLX90393_DEFAULT_ADDR,
                  TwoWire *wire = &Wire);
-  bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI);
+  // bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI);
 
   bool reset(void);
   bool exitMode(void);
@@ -201,7 +207,7 @@ public:
 
 private:
   Adafruit_I2CDevice *i2c_dev = NULL;
-  Adafruit_SPIDevice *spi_dev = NULL;
+  // Adafruit_SPIDevice *spi_dev = NULL;
 
   bool readRegister(uint8_t reg, uint16_t *data);
   bool writeRegister(uint8_t reg, uint16_t data);
@@ -215,7 +221,7 @@ private:
   enum mlx90393_oversampling _osr;
 
   int32_t _sensorID = 90393;
-  int _cspin;
+  // int _cspin;  // TODO uncomment when you will enable SPI
 };
 
 #endif /* ADAFRUIT_MLX90393_H */

@@ -16,6 +16,7 @@
   MIT license, all text above must be included in any redistribution
  *****************************************************************************/
 #include "Adafruit_MLX90393.h"
+// #include <string.h>
 
 /**
  * Instantiates a new Adafruit_MLX90393 class instance
@@ -38,8 +39,7 @@ bool Adafruit_MLX90393::begin_I2C(uint8_t i2c_addr, TwoWire *wire) {
   if (!i2c_dev) {
     i2c_dev = new Adafruit_I2CDevice(i2c_addr, wire);
   }
-  spi_dev = NULL;
-
+  // spi_dev = NULL;
   if (!i2c_dev->begin()) {
     return false;
   }
@@ -53,21 +53,21 @@ bool Adafruit_MLX90393::begin_I2C(uint8_t i2c_addr, TwoWire *wire) {
  *    @param  theSPI The SPI object to be used for SPI connections.
  *    @return True if initialization was successful, otherwise false.
  */
-boolean Adafruit_MLX90393::begin_SPI(uint8_t cs_pin, SPIClass *theSPI) {
-  i2c_dev = NULL;
-  if (!spi_dev) {
-    _cspin = cs_pin;
-    spi_dev = new Adafruit_SPIDevice(cs_pin,
-                                     1000000,               // frequency
-                                     SPI_BITORDER_MSBFIRST, // bit order
-                                     SPI_MODE3,             // data mode
-                                     theSPI);
-  }
-  if (!spi_dev->begin()) {
-    return false;
-  }
-  return _init();
-}
+// boolean Adafruit_MLX90393::begin_SPI(uint8_t cs_pin, SPIClass *theSPI) {
+//   i2c_dev = NULL;
+//   if (!spi_dev) {
+//     _cspin = cs_pin;
+//     spi_dev = new Adafruit_SPIDevice(cs_pin,
+//                                      1000000,               // frequency
+//                                      SPI_BITORDER_MSBFIRST, // bit order
+//                                      SPI_MODE3,             // data mode
+//                                      theSPI);
+//   }
+//   if (!spi_dev->begin()) {
+//     return false;
+//   }
+//   return _init();
+// }
 
 bool Adafruit_MLX90393::_init(void) {
 
@@ -454,14 +454,15 @@ uint8_t Adafruit_MLX90393::transceive(uint8_t *txbuf, uint8_t txlen,
     }
   }
 
-  if (spi_dev) {
-    spi_dev->write_then_read(txbuf, txlen, rxbuf2, rxlen + 1, 0x00);
-    status = rxbuf2[0];
-    for (i = 0; i < rxlen; i++) {
-      rxbuf[i] = rxbuf2[i + 1];
-    }
-    delay(interdelay);
-  }
+  // if (spi_dev) {
+  //   spi_dev->write_then_read(txbuf, txlen, rxbuf2, rxlen + 1, 0x00);
+  //   status = rxbuf2[0];
+  //   for (i = 0; i < rxlen; i++) {
+  //     rxbuf[i] = rxbuf2[i + 1];
+  //   }
+  //   delay(interdelay);
+  // }
+  // rt_printf("Here 1.4\n");
 
   /* Mask out bytes available in the status response. */
   return (status >> 2);
